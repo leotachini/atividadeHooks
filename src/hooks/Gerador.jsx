@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useReducer } from "react";
 import Loading from "../components/Helper/Loading";
 
+
 const colors = {
   fire: "#E74C3C",
   grass: "#186A3B",
@@ -116,8 +117,8 @@ const Gerador = () => {
         height: "80vh",
       }}
     >
-      <button onClick={handleClick}>Recomendação Aleatória</button>
-
+      <button style={{borderRadius:"5px",padding: "10px", color:"white", backgroundColor:"steelblue", fontSize:"20px"}} onClick={handleClick}>Poke Aleatório</button>
+   
       {show && (
         <h3>
           Quantidade de vezes que a aba foi aberta:

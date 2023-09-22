@@ -4,12 +4,10 @@ const Header = () => {
 
   return (
     <div>
-      <div className={styles.header}>
-       
+      <div className={styles.header}>     
         <nav>
           <ul className={styles.ul}>
             <li>Header</li>
-            <li></li>
           </ul>
         </nav>
       </div>

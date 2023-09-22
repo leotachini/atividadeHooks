@@ -49,6 +49,8 @@ function App() {
           Use dark mode
         </label>
         <Header />
+        <br />
+        <Gerador />
         <h4>UseTransition</h4>
         <Transition />
         <h4>UseMemo</h4>
@@ -65,7 +67,6 @@ function App() {
         ))}
       </ul>
         
-        <Gerador />
         <h4>UseLayoutEffect</h4>
         <LayoutEffect />
         <h4>UseDeferredValue</h4>
