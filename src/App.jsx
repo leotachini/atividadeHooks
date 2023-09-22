@@ -3,6 +3,8 @@ import "./App.css";
 import Header from "./components/Header";
 import Gerador from "./hooks/Gerador";
 import Component from "./hooks/DeferredValue";
+import Transition from "./hooks/useTransition";
+import LayoutEffect from "./hooks/LayoutEffect";
 
 const ThemeContext = createContext(null);
 
@@ -47,7 +49,9 @@ function App() {
           Use dark mode
         </label>
         <Header />
-        <br />
+        <h4>UseTransition</h4>
+        <Transition />
+        <h4>UseMemo</h4>
         <input
         type="text"
         value={inputValue}
@@ -62,7 +66,9 @@ function App() {
       </ul>
         
         <Gerador />
-        <h3>UseDeferredValue</h3>
+        <h4>UseLayoutEffect</h4>
+        <LayoutEffect />
+        <h4>UseDeferredValue</h4>
         <Component />
         <Panel />
       </div>

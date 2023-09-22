@@ -21,3 +21,36 @@
     align-items: center;
     
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* CSS para a animação de saída */
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  
+  /* Aplicar a animação de entrada */
+  .fade-in-entering {
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  /* Aplicar a animação de saída */
+  .fade-out-exiting {
+    animation: fadeOut 0.5s forwards;
+  }
