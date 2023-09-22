@@ -1,0 +1,13 @@
+.header{
+    color: azure;
+    background-color: #0e008a;
+    display: flex;
+}
+
+.ul{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
