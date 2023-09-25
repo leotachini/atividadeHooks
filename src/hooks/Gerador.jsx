@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useReducer } from "react";
+import { useState, useEffect, useCallback, useRef, useReducer} from "react";
 import Loading from "../components/Helper/Loading";
 
 const colors = {
@@ -183,7 +183,6 @@ const Gerador = () => {
               {ability.ability.name + " "}
             </li>
           ))}
-         
       </ul>
     </div>
   );

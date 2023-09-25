@@ -5,6 +5,7 @@ import Gerador from "./hooks/Gerador";
 import Component from "./hooks/DeferredValue";
 import Transition from "./hooks/useTransition";
 //import LayoutEffect from "./hooks/LayoutEffect";
+import { useOnlineStatus } from './hooks/customHook';
 
 const ThemeContext = createContext(null);
 
@@ -45,11 +46,32 @@ function App() {
     }
   }, []);
 
+  //Custom Hook para verificar se o usuário está online ou offline
+
+function StatusBar() {
+  const isOnline = useOnlineStatus();
+  return <h3>{isOnline ? '✅ Online' : '❌ Disconnected'}</h3>;
+}
+
+function SaveButton() {
+  const isOnline = useOnlineStatus();
+
+  function handleSaveClick() {
+    console.log('✅ Progress saved');
+  }
+
+  return (
+    <button disabled={!isOnline} onClick={handleSaveClick}>
+      {isOnline ? 'Save progress' : 'Reconnecting...'}
+    </button>
+  );
+}
 //useContext para mudar o tema da aplicação
 
   return (
     <ThemeContext.Provider value={theme}>
       <div className={`App ${theme}`}  ref={containerRef}>
+      <StatusBar />
         <label>
           <input
             type="checkbox"
@@ -81,6 +103,8 @@ function App() {
         <h4>UseDeferredValue</h4>
         <Component />
         <Panel />
+        <SaveButton />
+      
       </div>
     </ThemeContext.Provider>
   );
