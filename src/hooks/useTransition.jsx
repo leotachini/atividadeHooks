@@ -15,7 +15,7 @@ function Transition () {
 
   const handleRemoveItem = (index) => {
     const newItems = [...items];
-    newItems.splice(index, 1);
+    newItems.splice(index, 2);
     setItems(newItems);
   };
 

@@ -53,9 +53,13 @@ const Gerador = () => {
   }, [show]);
 
   function handleClick() {
+    //useCallback
     generatePokemonId();
+    //useState
     setShow(!show);
+    //useRef
     handleStart();
+    //useReducer
     handleButtonClick();
   }
 
@@ -106,6 +110,7 @@ const Gerador = () => {
     fetchData();
   }, [generatePokemonId]);
 
+
   if (loading) return <Loading />;
 
   return (
@@ -124,6 +129,7 @@ const Gerador = () => {
           color: "white",
           backgroundColor: "steelblue",
           fontSize: "20px",
+          cursor: "pointer",
         }}
         onClick={handleClick}
       >
@@ -177,6 +183,7 @@ const Gerador = () => {
               {ability.ability.name + " "}
             </li>
           ))}
+         
       </ul>
     </div>
   );

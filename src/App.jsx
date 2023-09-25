@@ -1,10 +1,10 @@
-import  { createContext, useContext, useState, useMemo } from "react";
+import  { createContext, useContext, useState, useMemo, useRef, useLayoutEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Gerador from "./hooks/Gerador";
 import Component from "./hooks/DeferredValue";
 import Transition from "./hooks/useTransition";
-import LayoutEffect from "./hooks/LayoutEffect";
+//import LayoutEffect from "./hooks/LayoutEffect";
 
 const ThemeContext = createContext(null);
 
@@ -16,7 +16,7 @@ function App() {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
-  //useMemo
+  //useMemo que memoriza o valor de um input e o adiciona a uma lista
 
   const [inputValue, setInputValue] = useState("");
   const [list, setList] = useState([]);
@@ -35,11 +35,21 @@ function App() {
     setInputValue("");
   };
 
+  const [height, setHeight] = useState(0);
+  const containerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (containerRef.current) {
+      const containerHeight = containerRef.current.clientHeight;
+      setHeight(containerHeight);
+    }
+  }, []);
+
 //useContext para mudar o tema da aplicação
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div className={`App ${theme}`}>
+      <div className={`App ${theme}`}  ref={containerRef}>
         <label>
           <input
             type="checkbox"
@@ -50,7 +60,9 @@ function App() {
         </label>
         <Header />
         <br />
-        <Gerador />
+        <Gerador/>
+        <h4>UseLayoutEffect</h4>
+        <p>A altura da página é: {height}px</p>
         <h4>UseTransition</h4>
         <Transition />
         <h4>UseMemo</h4>
@@ -66,9 +78,6 @@ function App() {
           <li key={index}>{item}</li>
         ))}
       </ul>
-        
-        <h4>UseLayoutEffect</h4>
-        <LayoutEffect />
         <h4>UseDeferredValue</h4>
         <Component />
         <Panel />
