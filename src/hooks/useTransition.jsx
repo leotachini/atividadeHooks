@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./../../src/App.css"; 
 
+//useTransition para animar a entrada e saída de um componente, 
+//no caso um <li> novo na lista
+
 function Transition () {
     const [items, setItems] = useState([]);
   const [text, setText] = useState("");

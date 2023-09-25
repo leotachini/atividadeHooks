@@ -11,6 +11,9 @@ function LayoutEffect() {
     }
   }, []);
 
+//useLayoutEffect para medir a altura do elemento e informá-lo na 
+//página
+
   return (
     <div>
       <h4>Medição de Altura com useLayoutEffect</h4>

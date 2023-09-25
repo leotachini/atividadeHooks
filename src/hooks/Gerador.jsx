@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useReducer } from "react";
 import Loading from "../components/Helper/Loading";
 
-
 const colors = {
   fire: "#E74C3C",
   grass: "#186A3B",
@@ -46,7 +45,8 @@ const Gerador = () => {
     }
   }
 
-  //useCallback para mudar o id cada vez que o botão e selecionado
+  //useCallback para mudar o id cada vez que o botão e selecionado e 
+  //evitar que ocorra um bug ao se clicar no botão diversas vezes
 
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
@@ -84,7 +84,7 @@ const Gerador = () => {
     dispatch({ type: "increment" });
   }
 
-  //useEffect
+  //useEffect para chamar a API e controlar seus efeitos colaterais
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,9 +117,21 @@ const Gerador = () => {
         height: "80vh",
       }}
     >
-      <button style={{borderRadius:"5px",padding: "10px", color:"white", backgroundColor:"steelblue", fontSize:"20px"}} onClick={handleClick}>Poke Aleatório</button>
-   
+      <button
+        style={{
+          borderRadius: "5px",
+          padding: "10px",
+          color: "white",
+          backgroundColor: "steelblue",
+          fontSize: "20px",
+        }}
+        onClick={handleClick}
+      >
+        Poke Aleatório
+      </button>
+
       {show && (
+        //useReducer para mostrar a quantidade de vezes que o botão foi clicado
         <h3>
           Quantidade de vezes que a aba foi aberta:
           {Math.floor(state.count * 0.5)}
