@@ -6,7 +6,7 @@ const SlowList = memo(function SlowList({ text }) {
   console.log('[ARTIFICIALLY SLOW] Rendering 250 <SlowItem />');
 
   let items = [];
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     items.push(<SlowItem key={i} text={text} />);
   }
   return (

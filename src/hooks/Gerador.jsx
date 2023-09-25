@@ -46,7 +46,7 @@ const Gerador = () => {
   }
 
   //useCallback para mudar o id cada vez que o botão e selecionado e 
-  //evitar que ocorra um bug ao se clicar no botão diversas vezes
+  //evitar que ocorra um bug ao se clicar no botão várias vezes
 
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
@@ -55,12 +55,12 @@ const Gerador = () => {
   function handleClick() {
     //useCallback
     generatePokemonId();
-    //useState
-    setShow(!show);
     //useRef
     handleStart();
     //useReducer
     handleButtonClick();
+    //useState
+    setShow(!show);
   }
 
   //useRef para armazenar o tempo que a aba foi aberta
@@ -82,10 +82,12 @@ const Gerador = () => {
 
   //useReducer
 
-  const [state, dispatch] = useReducer(reducer, { count: 0 });
+  const [state, dispatch] = useReducer(reducer, { count: 1 });
 
   function handleButtonClick() {
+    if(show){
     dispatch({ type: "increment" });
+    }
   }
 
   //useEffect para chamar a API e controlar seus efeitos colaterais
@@ -96,11 +98,11 @@ const Gerador = () => {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${generatePokemonId()}/`
         );
-        if (!response.ok) {
-          throw new Error("Erro ao buscar pela informação");
-        }
         const data = await response.json();
+        if(show){
         setPokemon(data);
+        console.log(data);
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -140,7 +142,7 @@ const Gerador = () => {
         //useReducer para mostrar a quantidade de vezes que o botão foi clicado
         <h3>
           Quantidade de vezes que a aba foi aberta:
-          {Math.floor(state.count * 0.5)}
+          {state.count}
         </h3>
       )}
       {show && <h3>Tempo com a aba aberta: {secondsPassed.toFixed(3)}</h3>}
