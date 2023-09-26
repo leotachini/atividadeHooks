@@ -55,12 +55,12 @@ const Gerador = () => {
   function handleClick() {
     //useCallback
     generatePokemonId();
+    //useState
+    setShow(!show);
     //useRef
     handleStart();
     //useReducer
     handleButtonClick();
-    //useState
-    setShow(!show);
   }
 
   //useRef para armazenar o tempo que a aba foi aberta
@@ -91,19 +91,18 @@ const Gerador = () => {
   }
 
   //useEffect para chamar a API e controlar seus efeitos colaterais
-
+  
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${generatePokemonId()}/`
         );
         const data = await response.json();
-        if(show){
         setPokemon(data);
-        console.log(data);
-        }
-      } catch (error) {
+      }
+     catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
@@ -148,43 +147,32 @@ const Gerador = () => {
       {show && <h3>Tempo com a aba aberta: {secondsPassed.toFixed(3)}</h3>}
       {show && <h1>#{pokemon.id}</h1>}
       {show && <h1 style={{ fontFamily: "revert" }}>{pokemon.name}</h1>}
-      {show && <img src={pokemon.sprites.front_default} alt={pokemon.name} />}
+     {show && <img src={pokemon.sprites.front_default} alt={pokemon.name} />}
       {show && <h2>Tipos</h2>}
       <ul style={{ textAlign: "center", marginRight: "35px" }}>
-        {show &&
-          pokemon.types.map((type, index) => (
-            <li
-              style={{
-                backgroundColor: colors[type.type.name],
-                listStyle: "none",
-                display: "inline-block",
-                borderRadius: "5px",
-                padding: "5px",
-              }}
-              key={index}
-            >
-              {type.type.name + " "}
-            </li>
-          ))}
+      {show && pokemon.types.map((item) => (
+          <li
+            style={{
+              listStyleType: "none",
+              backgroundColor: colors[item.type.name],
+              borderRadius: "5px",
+              padding: "5px",
+              margin: "5px",
+              color: "white",
+            }}
+            key={item.type.name}
+          >
+            {item.type.name}
+          </li>
+        ))}
       </ul>
       {show && <h2>Habilidades</h2>}
       <ul style={{ padding: "5px" }}>
-        {show &&
-          pokemon.abilities.map((ability, index) => (
-            <li
-              style={{
-                listStyle: "none",
-                display: "block",
-                backgroundColor: "white",
-                color: "black",
-                padding: "5px",
-                border: "black 1px solid",
-              }}
-              key={index}
-            >
-              {ability.ability.name + " "}
-            </li>
-          ))}
+       {show && pokemon.abilities.map((item, index) => (
+          <li style={{ listStyleType: "none" }} key={index}>
+            {item.ability.name}
+          </li>
+        ))}
       </ul>
     </div>
   );
