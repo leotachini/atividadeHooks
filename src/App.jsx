@@ -1,12 +1,8 @@
-import  { createContext, useContext, useState, useMemo, useRef, useLayoutEffect } from "react";
+import  { createContext, useContext, useState, useMemo} from "react";
 import "./App.css";
-import Header from "./components/Header";
 import Gerador from "./hooks/Gerador";
 import Component from "./hooks/DeferredValue";
 import Transition from "./hooks/useTransition";
-//import LayoutEffect from "./hooks/LayoutEffect";
-import { useOnlineStatus } from './hooks/customHook';
-
 const ThemeContext = createContext(null);
 
 function App() {
@@ -36,42 +32,15 @@ function App() {
     setInputValue("");
   };
 
-  const [height, setHeight] = useState(0);
-  const containerRef = useRef(null);
+ 
 
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      const containerHeight = containerRef.current.clientHeight;
-      setHeight(containerHeight);
-    }
-  }, []);
-
-  //Custom Hook para verificar se o usuário está online ou offline
-
-function StatusBar() {
-  const isOnline = useOnlineStatus();
-  return <h3>{isOnline ? '✅ Online' : '❌ Disconnected'}</h3>;
-}
-
-function SaveButton() {
-  const isOnline = useOnlineStatus();
-
-  function handleSaveClick() {
-    console.log('✅ Progress saved');
-  }
-
-  return (
-    <button disabled={!isOnline} onClick={handleSaveClick}>
-      {isOnline ? 'Save progress' : 'Reconnecting...'}
-    </button>
-  );
-}
 //useContext para mudar o tema da aplicação
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div className={`App ${theme}`}  ref={containerRef}>
-      <StatusBar />
+
+      <div className={`App ${theme}`} >
+
         <label>
           <input
             type="checkbox"
@@ -80,35 +49,40 @@ function SaveButton() {
           />
           Use dark mode
         </label>
-        <Header />
-        <br />
+
         <Gerador/>
-        <h4>UseLayoutEffect</h4>
-        <p>A altura da página é: {height}px</p>
+
         <h4>UseTransition</h4>
+
         <Transition />
+
         <h4>UseMemo</h4>
+
         <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         placeholder="Enter a value"
       />
+
       <button onClick={handleAddItem}>Add Item</button>
+
       <ul>
         {filteredList.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
       </ul>
+
         <h4>UseDeferredValue</h4>
+
         <Component />
+
         <Panel />
-        <SaveButton />
       
       </div>
     </ThemeContext.Provider>
   );
-}
+        }
 
 function Panel() {
   const theme = useContext(ThemeContext);

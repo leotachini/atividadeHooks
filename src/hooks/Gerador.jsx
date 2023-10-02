@@ -1,5 +1,11 @@
-import { useState, useEffect, useCallback, useRef, useReducer} from "react";
-import Loading from "../components/Helper/Loading";
+import  {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useReducer,
+  useLayoutEffect
+} from "react";
 
 const colors = {
   fire: "#E74C3C",
@@ -19,51 +25,53 @@ const colors = {
   ghost: "#2B006E",
   ice: "skyblue",
   dark: "#212F3D",
-  steel: "#85929E",
+  steel: "#85929E"
 };
 
 const Gerador = () => {
-  //diversos useState
-
   const [show, setShow] = useState(false);
   const [pokemon, setPokemon] = useState({});
-  const [loading, setLoading] = useState(true);
   const [startTime, setStartTime] = useState(0);
   const [now, setNow] = useState(0);
   const intervalRef = useRef(null);
-
-  //useReducer
 
   function reducer(state, action) {
     switch (action.type) {
       case "increment":
         return {
-          count: state.count + 1,
-        }; // Retorna o novo valor do estado, que é um número
+          count: state.count + 1
+        };
       default:
         throw new Error();
     }
   }
 
-  //useCallback para mudar o id cada vez que o botão e selecionado e 
-  //evitar que ocorra um bug ao se clicar no botão várias vezes
+  //customHook
+  const [isOnline, setIsOnline] = useState(true);
+
+  const handleOnline = () => {
+    setIsOnline(!isOnline);
+  };
+
+  const textStyle = {
+    color: isOnline ? "green" : "red"
+  };
 
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
   }, [show]);
 
-  function handleClick() {
-    //useCallback
+  const handleClick = () => {
+    toggleOpen();
     generatePokemonId();
-    //useState
     setShow(!show);
-    //useRef
     handleStart();
-    //useReducer
     handleButtonClick();
-  }
+  };
 
-  //useRef para armazenar o tempo que a aba foi aberta
+  const handleOffline = () => {
+    window.alert("Você precisa estar online para utilizar o site");
+  };
 
   function handleStart() {
     setStartTime(Date.now());
@@ -80,49 +88,58 @@ const Gerador = () => {
     secondsPassed = (now - startTime) / 1000;
   }
 
-  //useReducer
-
   const [state, dispatch] = useReducer(reducer, { count: 1 });
 
   function handleButtonClick() {
-    if(show){
-    dispatch({ type: "increment" });
+    if (show) {
+      dispatch({ type: "increment" });
     }
   }
 
-  //useEffect para chamar a API e controlar seus efeitos colaterais
-  
   useEffect(() => {
     const fetchData = async () => {
-      
       try {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${generatePokemonId()}/`
         );
         const data = await response.json();
         setPokemon(data);
-      }
-     catch (error) {
+      } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false);
+        console.log("finalizado");
       }
     };
     fetchData();
   }, [generatePokemonId]);
 
+  const heightRef = useRef(null);
 
-  if (loading) return <Loading />;
+  useLayoutEffect(() => {
+    if (show) {
+      const height = heightRef.current.scrollHeight;
+      heightRef.current.style.maxHeight = `${height * 1.4}px`;
+    } else {
+      heightRef.current.style.maxHeight = "0";
+    }
+  }, [show]);
+
+  function toggleOpen() {
+    setShow(!show);
+  }
 
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        height: "80vh",
+        alignItems: "center"
       }}
+      className="container"
     >
+      <h1 style={textStyle}>Status: {isOnline ? "Online" : "Offline"}</h1>
+      <button onClick={handleOnline}>Toggle Online/Offline</button>
+      <br />
       <button
         style={{
           borderRadius: "5px",
@@ -130,50 +147,61 @@ const Gerador = () => {
           color: "white",
           backgroundColor: "steelblue",
           fontSize: "20px",
-          cursor: "pointer",
+          cursor: "pointer"
         }}
-        onClick={handleClick}
+        //CustomHook
+        onClick={isOnline ? handleClick : handleOffline}
       >
-        Poke Aleatório
+        {isOnline
+          ? //CustomHook
+            "Poke Aleatório"
+          : "Você está offline. Tente novamente quando estiver online."}
       </button>
 
-      {show && (
-        //useReducer para mostrar a quantidade de vezes que o botão foi clicado
-        <h3>
-          Quantidade de vezes que a aba foi aberta:
-          {state.count}
-        </h3>
-      )}
-      {show && <h3>Tempo com a aba aberta: {secondsPassed.toFixed(3)}</h3>}
-      {show && <h1>#{pokemon.id}</h1>}
-      {show && <h1 style={{ fontFamily: "revert" }}>{pokemon.name}</h1>}
-     {show && <img src={pokemon.sprites.front_default} alt={pokemon.name} />}
-      {show && <h2>Tipos</h2>}
-      <ul style={{ textAlign: "center", marginRight: "35px" }}>
-      {show && pokemon.types.map((item) => (
-          <li
-            style={{
-              listStyleType: "none",
-              backgroundColor: colors[item.type.name],
-              borderRadius: "5px",
-              padding: "5px",
-              margin: "5px",
-              color: "white",
-            }}
-            key={item.type.name}
-          >
-            {item.type.name}
-          </li>
-        ))}
-      </ul>
-      {show && <h2>Habilidades</h2>}
-      <ul style={{ padding: "5px" }}>
-       {show && pokemon.abilities.map((item, index) => (
-          <li style={{ listStyleType: "none" }} key={index}>
-            {item.ability.name}
-          </li>
-        ))}
-      </ul>
+      <div ref={heightRef} className={`expandable-div ${show ? "open" : ""}`}>
+        {show && (
+          <h3>
+            Quantidade de vezes que a aba foi aberta:
+            {state.count}
+          </h3>
+        )}
+        {show && <h3>Tempo com a aba aberta: {secondsPassed.toFixed(3)}</h3>}
+        {show && <h1>#{pokemon.id}</h1>}
+        {show && <h1 style={{ fontFamily: "revert" }}>{pokemon.name}</h1>}
+        {show && <img src={pokemon.sprites.front_default} alt={pokemon.name} />}
+        {show && <h2>Tipos</h2>}
+        <ul style={{ textAlign: "center", marginRight: "35px" }}>
+          {show &&
+            pokemon.types.map((item) => (
+              <li
+                style={{
+                  listStyleType: "none",
+                  backgroundColor: colors[item.type.name],
+                  borderRadius: "5px",
+                  padding: "5px",
+                  margin: "5px",
+                  color: "white",
+                  fontWeight: "520"
+                }}
+                key={item.type.name}
+              >
+                {item.type.name}
+              </li>
+            ))}
+        </ul>
+        {show && <h2>Habilidades</h2>}
+        <ul style={{ padding: "5px" }}>
+          {show &&
+            pokemon.abilities.map((item, index) => (
+              <li
+                style={{ listStyleType: "none", fontWeight: "600" }}
+                key={index}
+              >
+                {item.ability.name}
+              </li>
+            ))}
+        </ul>
+      </div>
     </div>
   );
 };

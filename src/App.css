@@ -46,12 +46,31 @@
     }
   }
   
-  /* Aplicar a animação de entrada */
+  /* Animação de entrada */
   .fade-in-entering {
-    animation: fadeIn 1s forwards;
+    animation: fadeIn 3s forwards;
   }
   
-  /* Aplicar a animação de saída */
+  /* Animação de saída */
   .fade-out-exiting {
-    animation: fadeOut 1s forwards;
+    animation: fadeOut 3s forwards;
   }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .expandable-div {
+    overflow: hidden;
+    max-height: 0;
+    text-align: center;
+  }
+  
+  .expandable-div.open {
+    max-height: 606px; /* Altura da div*/
+    transition: max-height 2.3s ease-out;
+    text-align: center;
+  }
+  

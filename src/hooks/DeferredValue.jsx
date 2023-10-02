@@ -5,7 +5,10 @@ import SlowList from './SlowList';
 
 function DeferredValue() {
   const [text, setText] = useState('');
-  const deferredText = useDeferredValue(text);
+  const deferredText = useDeferredValue(text, { timeoutMs: 2000 });
+
+
+
   return (
     <>
       <input value={text} onChange={e => setText(e.target.value)} />
