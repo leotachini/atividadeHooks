@@ -1,5 +1,4 @@
-import { memo } from 'react';
-
+import { memo, useDeferredValue } from 'react';
 
 const SlowList = memo(function SlowList({ text }) {
   // Log once. The actual slowdown is inside SlowItem.
@@ -7,7 +6,10 @@ const SlowList = memo(function SlowList({ text }) {
 
   let items = [];
   for (let i = 0; i < 50; i++) {
-    items.push(<SlowItem key={i} text={text} />);
+    // Use useDeferredValue to delay the text update
+    const deferredText = useDeferredValue(text, { timeoutMs: 300 });
+
+    items.push(<SlowItem key={i} text={deferredText} />);
   }
   return (
     <ul className="items">

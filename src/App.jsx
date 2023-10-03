@@ -1,8 +1,9 @@
 import  { createContext, useContext, useState, useMemo} from "react";
 import "./App.css";
-import Gerador from "./hooks/Gerador";
+import UseGenerator from "./hooks/UseGenerator";
 import Component from "./hooks/DeferredValue";
 import Transition from "./hooks/useTransition";
+
 const ThemeContext = createContext(null);
 
 function App() {
@@ -50,7 +51,7 @@ function App() {
           Use dark mode
         </label>
 
-        <Gerador/>
+        <UseGenerator/>
 
         <h4>UseTransition</h4>
 

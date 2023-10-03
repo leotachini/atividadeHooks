@@ -1,11 +1,13 @@
-import  {
+import {
   useState,
   useEffect,
   useCallback,
   useRef,
   useReducer,
-  useLayoutEffect
+  useLayoutEffect,
 } from "react";
+
+import useMedia from "./useMedia";
 
 const colors = {
   fire: "#E74C3C",
@@ -25,24 +27,38 @@ const colors = {
   ghost: "#2B006E",
   ice: "skyblue",
   dark: "#212F3D",
-  steel: "#85929E"
+  steel: "#85929E",
 };
-
-const Gerador = () => {
+//useState
+const UseGenerator = () => {
   const [show, setShow] = useState(false);
   const [pokemon, setPokemon] = useState({});
   const [startTime, setStartTime] = useState(0);
   const [now, setNow] = useState(0);
+
+  //useRef
   const intervalRef = useRef(null);
 
+  //useMedia
+  const isWide = useMedia("(min-width: 520px)");
+
+  //useReducer
   function reducer(state, action) {
     switch (action.type) {
       case "increment":
         return {
-          count: state.count + 1
+          count: state.count + 1,
         };
       default:
         throw new Error();
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, { count: 1 });
+
+  function handleButtonClick() {
+    if (show) {
+      dispatch({ type: "increment" });
     }
   }
 
@@ -52,11 +68,15 @@ const Gerador = () => {
   const handleOnline = () => {
     setIsOnline(!isOnline);
   };
-
-  const textStyle = {
-    color: isOnline ? "green" : "red"
+  const handleOffline = () => {
+    window.alert("Você precisa estar online para utilizar o site");
   };
 
+  const textStyle = {
+    color: isOnline ? "green" : "red",
+  };
+
+  //useCallback
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
   }, [show]);
@@ -69,10 +89,7 @@ const Gerador = () => {
     handleButtonClick();
   };
 
-  const handleOffline = () => {
-    window.alert("Você precisa estar online para utilizar o site");
-  };
-
+  //useRef
   function handleStart() {
     setStartTime(Date.now());
     setNow(Date.now());
@@ -88,14 +105,7 @@ const Gerador = () => {
     secondsPassed = (now - startTime) / 1000;
   }
 
-  const [state, dispatch] = useReducer(reducer, { count: 1 });
-
-  function handleButtonClick() {
-    if (show) {
-      dispatch({ type: "increment" });
-    }
-  }
-
+  //useEffect
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -113,8 +123,10 @@ const Gerador = () => {
     fetchData();
   }, [generatePokemonId]);
 
+  //useRef dentro do useLayoutEffect
   const heightRef = useRef(null);
 
+  //useLayoutEffect
   useLayoutEffect(() => {
     if (show) {
       const height = heightRef.current.scrollHeight;
@@ -133,7 +145,7 @@ const Gerador = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
       }}
       className="container"
     >
@@ -147,15 +159,14 @@ const Gerador = () => {
           color: "white",
           backgroundColor: "steelblue",
           fontSize: "20px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         //CustomHook
-        onClick={isOnline ? handleClick : handleOffline}
+        onClick={isOnline && isWide ? handleClick : handleOffline}
       >
-        {isOnline
-          ? //CustomHook
-            "Poke Aleatório"
-          : "Você está offline. Tente novamente quando estiver online."}
+        {isOnline && isWide
+          ? "Poke Aleatório"
+          : "Você está offline ou em uma tela estreita demais."}
       </button>
 
       <div ref={heightRef} className={`expandable-div ${show ? "open" : ""}`}>
@@ -181,7 +192,7 @@ const Gerador = () => {
                   padding: "5px",
                   margin: "5px",
                   color: "white",
-                  fontWeight: "520"
+                  fontWeight: "520",
                 }}
                 key={item.type.name}
               >
@@ -206,4 +217,4 @@ const Gerador = () => {
   );
 };
 
-export default Gerador;
+export default UseGenerator;
