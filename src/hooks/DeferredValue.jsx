@@ -5,7 +5,7 @@ import SlowList from './SlowList';
 
 function DeferredValue() {
   const [text, setText] = useState('');
-  const deferredText = useDeferredValue(text, { timeoutMs: 2000 });
+  const deferredText = useDeferredValue(text, { timeoutMs: 500 });
 
 
 

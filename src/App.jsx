@@ -33,6 +33,7 @@ function App() {
     setInputValue("");
   };
 
+  document.body.classList.toggle('dark', theme === 'dark');
  
 
 //useContext para mudar o tema da aplicação
@@ -41,6 +42,7 @@ function App() {
     <ThemeContext.Provider value={theme}>
 
       <div className={`App ${theme}`} >
+
 
         <label>
           <input

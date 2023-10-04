@@ -3,14 +3,25 @@
     transition: background-color 0.5s ease;
     background-color: #ffffff;
     color: black;
+    padding: 10px;
   }
   
   /* Estilos para o tema escuro */
   .App.dark {
     background-color: #333333;
     color: #ffffff;
-    
+    padding: 10px;
   }
+
+body{
+  background-color: #ffffff;
+  color: black;
+}
+
+body.dark{
+  background-color: #333333;
+    color: #ffffff;
+}
 
   .botaoMemo{
     display: flex;
@@ -43,12 +54,12 @@
   
   /* Animação de entrada */
   .fade-in-entering {
-    animation: fadeIn 3s forwards;
+    animation: fadeIn 1.5s forwards;
   }
   
   /* Animação de saída */
   .fade-out-exiting {
-    animation: fadeOut 3s forwards;
+    animation: fadeOut 1.5s forwards;
   }
 
   .container {

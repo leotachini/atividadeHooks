@@ -1,11 +1,9 @@
 import { useState } from "react";
-import "./../../src/App.css"; 
+import { useTransition, animated } from 'react-spring';
+import "./../../src/App.css";
 
-//useTransition para animar a entrada e saída de um componente, 
-//no caso um <li> novo na lista
-
-function Transition () {
-    const [items, setItems] = useState([]);
+function Transition() {
+  const [items, setItems] = useState([]);
   const [text, setText] = useState("");
 
   const handleAddItem = () => {
@@ -19,9 +17,15 @@ function Transition () {
     setItems(newItems);
   };
 
+  const transitions = useTransition(items, {
+    from: { opacity: 0, height: 0 },
+    enter: { opacity: 1, height: 'auto' },
+    leave: { opacity: 0, height: 0 },
+    config: { tension: 220, friction: 20 }, // Adjust these values for the desired animation effect
+  });
+
   return (
     <div>
-
       <input
         type="text"
         value={text}
@@ -30,19 +34,19 @@ function Transition () {
       />
       <button onClick={handleAddItem}>Add Item</button>
       <ul>
-        {items.map((item, index) => (
-          <li
+        {transitions((style, item, _, index) => (
+          <animated.li
             key={index}
+            style={style}
             className={`fade-in-entering`}
             onAnimationEnd={() => handleRemoveItem(index)}
           >
             {item}
-          </li>
+          </animated.li>
         ))}
       </ul>
     </div>
   );
 }
 
-
-export default Transition ;
+export default Transition;

@@ -4,7 +4,8 @@ import {
   useCallback,
   useRef,
   useReducer,
-  useLayoutEffect,
+  useLayoutEffect
+  
 } from "react";
 
 import useMedia from "./useMedia";
