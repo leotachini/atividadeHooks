@@ -1,52 +1,37 @@
-import { useState } from "react";
-import { useTransition, animated } from 'react-spring';
-import "./../../src/App.css";
+import { useState, useTransition } from 'react';
 
-function Transition() {
-  const [items, setItems] = useState([]);
-  const [text, setText] = useState("");
+import { generateProducts } from './../components/data';
+import ProductList from './../components/ProductList';
 
-  const handleAddItem = () => {
-    setItems([...items, text]);
-    setText("");
-  };
+const dummyProducts = generateProducts();
 
-  const handleRemoveItem = (index) => {
-    const newItems = [...items];
-    newItems.splice(index, 2);
-    setItems(newItems);
-  };
+function filterProducts(filterTerm) {
+  if (!filterTerm) {
+    return dummyProducts;
+  }
+  return dummyProducts.filter((product) => product.includes(filterTerm));
+}
 
-  const transitions = useTransition(items, {
-    from: { opacity: 0, height: 0 },
-    enter: { opacity: 1, height: 'auto' },
-    leave: { opacity: 0, height: 0 },
-    config: { tension: 220, friction: 20 }, // Adjust these values for the desired animation effect
-  });
+function App() {
+  const [isPending, startTransition] = useTransition();
+  const [filterTerm, setFilterTerm] = useState('');
+
+  const filteredProducts = filterProducts(filterTerm);
+
+  function updateFilterHandler(event) {
+     startTransition(() => {
+       setFilterTerm(event.target.value);
+     });
+    setFilterTerm(event.target.value);
+  }
 
   return (
-    <div>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Enter an item"
-      />
-      <button onClick={handleAddItem}>Add Item</button>
-      <ul>
-        {transitions((style, item, _, index) => (
-          <animated.li
-            key={index}
-            style={style}
-            className={`fade-in-entering`}
-            onAnimationEnd={() => handleRemoveItem(index)}
-          >
-            {item}
-          </animated.li>
-        ))}
-      </ul>
+    <div id="app">
+      <input type="text" style={{justifyContent:"center"}} onChange={updateFilterHandler} />
+       {isPending && <p style={{color: 'orange'}}>Updating List...</p>} 
+      <ProductList products={filteredProducts} />
     </div>
   );
 }
 
-export default Transition;
+export default App;

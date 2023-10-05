@@ -1,26 +1,24 @@
 .App {
-    font-family: Arial, sans-serif;
-    transition: background-color 0.5s ease;
-    background-color: #ffffff;
-    color: black;
-    padding: 10px;
-  }
-  
-  /* Estilos para o tema escuro */
-  .App.dark {
-    background-color: #333333;
-    color: #ffffff;
-    padding: 10px;
-  }
-
-body{
+  font-family: Arial, sans-serif;
   background-color: #ffffff;
   color: black;
+  padding: 10px;
+}
+
+body{
+font-family: Arial, sans-serif;
+  transition: background-color 0.5s ease;
+  background-color: #ffffff;
+  color: black;
+  padding: 10px;
 }
 
 body.dark{
+font-family: Arial, sans-serif;
+  transition: background-color 0.5s ease;
   background-color: #333333;
-    color: #ffffff;
+  color: white;
+  padding: 10px;
 }
 
   .botaoMemo{

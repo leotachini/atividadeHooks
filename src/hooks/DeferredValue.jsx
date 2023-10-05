@@ -7,8 +7,6 @@ function DeferredValue() {
   const [text, setText] = useState('');
   const deferredText = useDeferredValue(text, { timeoutMs: 500 });
 
-
-
   return (
     <>
       <input value={text} onChange={e => setText(e.target.value)} />

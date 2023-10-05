@@ -80,10 +80,10 @@ const UseGenerator = () => {
   //useCallback
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
-  }, [show]);
+  }, [state]);
 
   const handleClick = () => {
-    toggleOpen();
+    //toggleOpen();
     generatePokemonId();
     setShow(!show);
     handleStart();
@@ -117,9 +117,7 @@ const UseGenerator = () => {
         setPokemon(data);
       } catch (error) {
         console.error(error);
-      } finally {
-        console.log("finalizado");
-      }
+      } 
     };
     fetchData();
   }, [generatePokemonId]);
@@ -137,9 +135,11 @@ const UseGenerator = () => {
     }
   }, [show]);
 
+/*
   function toggleOpen() {
     setShow(!show);
   }
+*/
 
   return (
     <div
