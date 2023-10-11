@@ -5,3 +5,5 @@ export function generateProducts() {
     }
     return products;
   }
+
+  //função que gera os produtos.

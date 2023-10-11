@@ -23,13 +23,14 @@ const colors = {
   dragon: "purple",
   psychic: "pink",
   flying: "steelblue",
-  fighting: "#641E16 ",
+  fighting: "#641E16",
   normal: "#b3b3b3",
   ghost: "#2B006E",
   ice: "skyblue",
   dark: "#212F3D",
   steel: "#85929E",
 };
+
 //useState
 const UseGenerator = () => {
   const [show, setShow] = useState(false);
@@ -39,25 +40,42 @@ const UseGenerator = () => {
 
   //useRef
   const intervalRef = useRef(null);
+  //nesse caso o useRef é usado para armazenar o valor do intervalo de tempo
 
-  //useMedia
+  //useMedia(custom hook)
   const isWide = useMedia("(min-width: 520px)");
+  //o use media é um custom hook que retorna verdadeiro ou falso dependendo do tamanho da tela
 
   //useReducer
   function reducer(state, action) {
     switch (action.type) {
+      //o use reducer permite criar varias "funções" com varios nome diferentes simplesmente usando um switch
       case "increment":
         return {
           count: state.count + 1,
+        };
+        case "decrement":
+        return {
+          count: state.count - 1,
+        };
+        case "double":
+        return {
+          count: state.count * 2,
+        };
+        case "half":
+        return {
+      count: state.count / 2,
         };
       default:
         throw new Error();
     }
   }
 
+  //useReducer
   const [state, dispatch] = useReducer(reducer, { count: 1 });
 
   function handleButtonClick() {
+    //caso o state show esteja positivo, o contador é incrementado 
     if (show) {
       dispatch({ type: "increment" });
     }
@@ -72,6 +90,7 @@ const UseGenerator = () => {
   const handleOffline = () => {
     window.alert("Você precisa estar online para utilizar o site");
   };
+  //caso o usuário esteja offline, não é possível clicar no botão
 
   const textStyle = {
     color: isOnline ? "green" : "red",
@@ -81,12 +100,18 @@ const UseGenerator = () => {
   const generatePokemonId = useCallback(() => {
     return Math.floor(Math.random() * 1010) + 1;
   }, [state]);
+//A mudar o valor do state do useReducer, o useCallback é chamado novamente
+
 
   const handleClick = () => {
     //toggleOpen();
+    //useCallback
     generatePokemonId();
+    //useState
     setShow(!show);
+    //useRef
     handleStart();
+    //useReducer
     handleButtonClick();
   };
 
@@ -105,6 +130,7 @@ const UseGenerator = () => {
   if (startTime != null && now != null) {
     secondsPassed = (now - startTime) / 1000;
   }
+
 
   //useEffect
   useEffect(() => {

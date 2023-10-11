@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useMemo } from "react";
 import "./App.css";
 import UseGenerator from "./hooks/UseGenerator";
-//import Component from "./hooks/DeferredValue";
 import Transition from "./hooks/useTransition";
 
 const ThemeContext = createContext(null);
@@ -18,11 +17,13 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [list, setList] = useState([]);
 
+  // Utilizando o useMemo para calcular a lista filtrada apenas quando necessário
   const filteredList = useMemo(() => {
-    console.log("Calculating filtered list...");
+    // Exibindo uma mensagem no console para indicar quando a lista filtrada está sendo recalculada
+    console.log("Calculando lista filtrada...");
+    // Filtrando a lista com base no valor da entrada de texto
     return list.filter((item) => item.includes(inputValue));
   }, [list, inputValue]);
-
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -32,6 +33,8 @@ function App() {
     setInputValue("");
   };
 
+  
+  
   document.body.classList.toggle("dark", theme === "dark");
 
   //useContext para mudar o tema da aplicação
